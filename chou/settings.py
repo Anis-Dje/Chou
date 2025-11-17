@@ -87,9 +87,19 @@ DATABASE_URL = os.environ.get(
     "postgresql://neondb_owner:npg_VPhx2CyQk8Dp@ep-spring-wind-adg3i4kw-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 )
 
-# Parse the DATABASE_URL so the connection pieces are set from the provided Neon URL.
+# Second database for orders
+ORDERS_DATABASE_URL = os.environ.get(
+    'ORDERS_DATABASE_URL',
+    "postgresql://neondb_owner:npg_N2qUxwFYr4CQ@ep-misty-shadow-a4h4siyf-pooler.us-east-1.aws.neon.tech/orders_db?sslmode=require&channel_binding=require"
+)
+
+# Parse the default DATABASE_URL
 _parsed_db = urlparse(DATABASE_URL)
 _query = parse_qs(_parsed_db.query)
+
+# Parse the orders DATABASE_URL
+_parsed_orders_db = urlparse(ORDERS_DATABASE_URL)
+_orders_query = parse_qs(_parsed_orders_db.query)
 
 DATABASES = {
     'default': {
@@ -101,8 +111,22 @@ DATABASES = {
         'PORT': str(_parsed_db.port) if _parsed_db.port else '5432',
         # Convert query params like sslmode and channel_binding into OPTIONS
         'OPTIONS': {k: v[0] for k, v in _query.items()},
+    },
+    'orders_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': _parsed_orders_db.path.lstrip('/'),
+        'USER': _parsed_orders_db.username,
+        'PASSWORD': _parsed_orders_db.password,
+        'HOST': _parsed_orders_db.hostname,
+        'PORT': str(_parsed_orders_db.port) if _parsed_orders_db.port else '5432',
+        # Convert query params like sslmode and channel_binding into OPTIONS
+        'OPTIONS': {k: v[0] for k, v in _orders_query.items()},
     }
 }
+
+
+# Database Router for multiple databases
+DATABASE_ROUTERS = ['chou.db_router.OrdersRouter']
 
 
 # Password validation
