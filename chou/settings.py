@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-35^f)h3whuarfygi%w^vs4l==(k*rcwss)re13!+zv$6d$zej-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['chou-xixo.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -145,8 +145,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# For development: allow all origins. Change to a specific list in production.
-CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS Configuration
+# For production: whitelist specific origins
+CORS_ALLOWED_ORIGINS = [
+    'https://chou-front.vercel.app',
+    'http://localhost:3000',  # For local development
+]
+
+# Allow credentials (cookies, authorization headers) in CORS requests
+CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
