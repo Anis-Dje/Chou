@@ -147,9 +147,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS Configuration
-# For production: whitelist specific origins
+# Allow all Vercel deployment URLs (production and previews) plus localhost
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://chou-front.*\.vercel\.app$",  # Matches all Vercel deployments
+]
+
 CORS_ALLOWED_ORIGINS = [
-    'https://chou-front.vercel.app',
     'http://localhost:3000',  # For local development
 ]
 
