@@ -173,11 +173,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS Configuration
 # Allow all Vercel deployment URLs (production and previews) plus localhost
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://chou-front.*\.vercel\.app$",  # Matches all Vercel deployments
+    r"^https://chou-front.*\.vercel\.app$",  # Matches all chou-front Vercel deployments
+    r"^https://brikoula.*\.vercel\.app$",     # Matches all brikoula Vercel deployments
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # For local development
+    'https://brikoula.vercel.app',   # Production domain
+    'http://localhost:3000',          # For local development
 ]
 
 # Allow credentials (cookies, authorization headers) in CORS requests
